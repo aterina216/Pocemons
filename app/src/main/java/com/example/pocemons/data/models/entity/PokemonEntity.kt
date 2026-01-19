@@ -5,7 +5,18 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "pokemons")
 class PokemonEntity (
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     val id: Int = 0,
     val name: String,
-    val url: String)
+    val imageUrl: String,
+    val url: String
+)
+{
+    fun capitalizedName(): String {
+        return name.replaceFirstChar { it.uppercase() }
+    }
+
+    fun getPokemonNumber(): String {
+        return "#${id.toString().padStart(3, '0')}"
+    }
+}

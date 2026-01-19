@@ -1,7 +1,9 @@
 package com.example.pocemons.ui.theme
 
+import android.R
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
@@ -31,4 +33,46 @@ val Typography = Typography(
         letterSpacing = 0.5.sp
     )
     */
+)
+
+
+val RobotoFontFamily = FontFamily.Default
+
+val PokemonTypography = androidx.compose.material3.Typography(
+    displayLarge = TextStyle(
+        fontFamily = RobotoFontFamily,
+        fontWeight = FontWeight.Normal,
+        fontSize = 32.sp,
+        color = PokemonWhite
+    ),
+    displayMedium = TextStyle(
+        fontFamily = RobotoFontFamily,
+        fontWeight = FontWeight.Bold,
+        fontSize = 24.sp,
+        color = PokemonWhite
+    ),
+    displaySmall = TextStyle(
+        fontFamily = RobotoFontFamily,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 18.sp,
+        color = PokemonWhite
+    ),
+    bodyLarge = TextStyle(
+        fontFamily = RobotoFontFamily,
+        fontWeight = FontWeight.Normal,
+        fontSize = 16.sp,
+        color = PokemonWhite
+    ),
+    bodyMedium = TextStyle(
+        fontFamily = RobotoFontFamily,
+        fontWeight = FontWeight.Normal,
+        fontSize = 14.sp,
+        color = PokemonGray
+    ),
+    labelLarge = TextStyle(
+        fontFamily = RobotoFontFamily,
+        fontWeight = FontWeight.Bold,
+        fontSize = 14.sp,
+        color = PokemonWhite
+    )
 )
