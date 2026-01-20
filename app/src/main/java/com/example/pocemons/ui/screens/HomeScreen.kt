@@ -24,6 +24,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -51,6 +52,7 @@ import com.example.pocemons.ui.components.EmptyStateView
 import com.example.pocemons.ui.components.PokemonListView
 import com.example.pocemons.ui.components.SearchResultsView
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.compose
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -70,6 +72,30 @@ fun HomeScreen(
 
     val searchResults by viewModel.searchResults.collectAsState()
     val isSearching by viewModel.isSearching.collectAsState()
+
+    val isLoadingMore by viewModel.isLoadingMore.collectAsState()
+    val isHasMore by viewModel.hasMorePokemons.collectAsState()
+
+    val isNearBottom by remember {
+        derivedStateOf {
+            val layoutInfo = lazyListState.layoutInfo
+            val totalItems = layoutInfo.totalItemsCount
+            val lastVisibleItem = layoutInfo.visibleItemsInfo.lastOrNull()
+
+            lastVisibleItem?.let {
+                (it.index >= totalItems - 5)
+                        && totalItems > 0
+            }?: false
+        }
+    }
+
+    LaunchedEffect(isNearBottom) {
+        if(isNearBottom
+            && !isLoadingMore && isHasMore
+            && searchText.text.isEmpty()) {
+            viewModel.loadMorePokemons()
+        }
+    }
 
     LaunchedEffect(searchText.text) {
         if(searchText.text.length > 2) {
@@ -186,8 +212,11 @@ fun HomeScreen(
                     else -> {
                         PokemonListView(
                             pokemons,
+                            isLoadingMore,
+                            isHasMore,
                             lazyListState,
-                            onPokemonClick
+                            onPokemonClick,
+                            viewModel::loadMorePokemons
                         )
                     }
                 }

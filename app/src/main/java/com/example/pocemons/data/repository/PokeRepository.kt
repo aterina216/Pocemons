@@ -13,13 +13,31 @@ import kotlin.collections.forEach
 
 class PokeRepository(val pokeDao: PokeDao, val api: PokeApi) {
 
-    suspend fun getPokemons(): List<PokemonEntity> {
+    private var currentOffset = 0
+    private val pageSize = 20
+    private var hasMorePokemons = true
+
+    suspend fun getPokemons(loadMore: Boolean = false): List<PokemonEntity> {
 
         try {
-            val response = api.getPokemons().results
+            if(loadMore && !hasMorePokemons) {
+                return emptyList()
+            }
+
+            if(!loadMore) {
+                currentOffset = 0
+                hasMorePokemons = true
+            }
+
+            val response = api.getPokemons(pageSize,
+                offset = currentOffset)
+
+            hasMorePokemons = response.next!= null
+
+            currentOffset += pageSize
 
             val listName = pokeDao.getPokemonNames()
-            val entity = response.map {
+            val entity = response.results.map {
                 it.toPokemonEntity()
             }
             entity.forEach { if (!listName.contains(it.name)) pokeDao.insertPoke(it) }
@@ -34,7 +52,7 @@ class PokeRepository(val pokeDao: PokeDao, val api: PokeApi) {
 
        return try {
             Log.d("PokeRepository", "No local results, loading more from API...")
-            val response = api.searchPokemons(500, 0)
+            val response = api.searchPokemons(1025, 0)
             Log.d("PokeRepository", "API returned: ${response.results.size} pokemons")
 
             val apiResults = response.results.filter {

@@ -22,7 +22,7 @@ interface PokeApi {
 
     @GET("pokemon")
     suspend fun searchPokemons(
-        @Query("limit") limit: Int = 1000,  // Увеличиваем для поиска
+        @Query("limit") limit: Int = 1025,  // Увеличиваем для поиска
         @Query("offset") offset: Int = 0
     ): PokeResponse
 }
