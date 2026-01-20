@@ -22,6 +22,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -44,6 +45,13 @@ import com.example.pocemons.ui.theme.PokemonBlack
 import com.example.pocemons.ui.theme.PokemonRed
 import com.example.pocemons.ui.viewmodels.PokeViewmodel
 import androidx.compose.runtime.setValue
+import androidx.room.util.query
+import com.example.pocemons.ui.components.EmptySearchView
+import com.example.pocemons.ui.components.EmptyStateView
+import com.example.pocemons.ui.components.PokemonListView
+import com.example.pocemons.ui.components.SearchResultsView
+import kotlinx.coroutines.delay
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
@@ -59,6 +67,19 @@ fun HomeScreen(
     var searchText by remember { mutableStateOf(TextFieldValue("")) }
 
     val lazyListState = rememberLazyListState()  // ← исправил опечатку (lazyListStater → lazyListState)
+
+    val searchResults by viewModel.searchResults.collectAsState()
+    val isSearching by viewModel.isSearching.collectAsState()
+
+    LaunchedEffect(searchText.text) {
+        if(searchText.text.length > 2) {
+            delay(300)
+            viewModel.searchPokemons(searchText.text)
+        }
+        else if(searchText.text.isEmpty()) {
+            viewModel.clearSearch()
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -126,60 +147,48 @@ fun HomeScreen(
 
             Box(modifier = Modifier.fillMaxSize()) {
                 when {
-                    isLoading ->
+                    searchText.text.isNotEmpty() && isSearching -> {
                         PokemonLoadingScreen()
+                    }
 
-                    error != null -> {
+                    searchText.text.isNotEmpty() &&
+                            searchResults.isNotEmpty() -> {
+                        SearchResultsView(
+                            searchResults,
+                            searchText.text,
+                            lazyListState,
+                            onPokemonClick
+                        )
+                            }
+
+                    searchText.text.isNotEmpty()
+                            && searchResults.isEmpty()
+                            && !isSearching -> {
+                        EmptySearchView(searchText.text)
+                            }
+
+                    isLoading -> {
+                        PokemonLoadingScreen()
+                    }
+
+                    error!=null -> {
                         PokemonErrorScreen(
                             message = error ?: "Неизвестная ошибка",
-                            onRetry = { viewModel.loadPokemons() }
+                            {viewModel.loadPokemons()}
+                        )
+                    }
+                    pokemons.isEmpty() -> {
+                        EmptyStateView(
+                            onRetry = {viewModel.loadPokemons()}
                         )
                     }
 
-                    pokemons.isEmpty() -> {
-                        Column(
-                            modifier = Modifier.fillMaxSize(),
-                            verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Text(
-                                "Покемоны не найдены",
-                                color = Color.Gray,
-                                fontSize = 18.sp
-                            )
-
-                            Button(
-                                onClick = { viewModel.loadPokemons() },
-                                modifier = Modifier.padding(top = 16.dp),
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = PokemonRed
-                                )
-                            ) {
-                                Text("Загрузить покемонов")
-                            }
-                        }
-                    }
-
                     else -> {
-                        val filteredPokemons = pokemons.filter { pokemon ->
-                            searchText.text.isEmpty() ||
-                                    pokemon.name.contains(searchText.text, ignoreCase = true) ||
-                                    pokemon.id.toString().contains(searchText.text)
-                        }
-
-                        LazyColumn(
-                            state = lazyListState,
-                            modifier = Modifier.fillMaxSize(),
-                            contentPadding = PaddingValues(16.dp),
-                            verticalArrangement = Arrangement.spacedBy(12.dp)
-                        ) {
-                            items(filteredPokemons) { pokemon: PokemonEntity ->  // ← Явно указываем тип
-                                PocemonCard(  // ← Убедись, что название правильное
-                                    pokemon = pokemon,
-                                    onClick = { onPokemonClick(pokemon) }
-                                )
-                            }
-                        }
+                        PokemonListView(
+                            pokemons,
+                            lazyListState,
+                            onPokemonClick
+                        )
                     }
                 }
             }

@@ -20,6 +20,12 @@ class PokeViewmodel(private val repository: PokeRepository): ViewModel() {
     private var _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error
 
+    private val _searchResults = MutableStateFlow<List<PokemonEntity>>(emptyList())
+    val searchResults: StateFlow<List<PokemonEntity>> = _searchResults
+
+    private val _isSearching = MutableStateFlow(false)
+    var isSearching: StateFlow<Boolean> = _isSearching
+
     init {
         Log.d("ViewModel", "PokeViewmodel: init")
         loadPokemons()
@@ -40,5 +46,38 @@ class PokeViewmodel(private val repository: PokeRepository): ViewModel() {
                 _isLoading.value = false
             }
         }
+    }
+
+    fun searchPokemons(query: String) {
+        viewModelScope.launch {
+            if(query.length<2) {
+                _searchResults.value = emptyList()
+                return@launch
+            }
+
+            _isSearching.value = true
+            _error.value = null
+
+            try {
+                val results = repository.searchPokemon(query)
+                if(results != null) {
+                    Log.d("TAG", "searchPokemons: $results")
+                    _searchResults.value = results
+                }
+            }
+            catch (e: Exception) {
+                Log.d("TAG", "searchPokemons: ${e.message}")
+                _error.value = e.message
+            }
+
+            finally {
+                _isSearching.value = false
+            }
+        }
+    }
+
+    fun clearSearch() {
+        _searchResults.value = emptyList()
+        _isSearching.value = false
     }
 }
