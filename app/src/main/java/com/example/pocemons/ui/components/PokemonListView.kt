@@ -18,7 +18,9 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.ui.Alignment
+import androidx.navigation.NavController
 import com.example.pocemons.ui.theme.PokemonRed
+import com.example.pocemons.ui.viewmodels.PokeViewmodel
 
 @Composable
 fun PokemonListView(
@@ -27,7 +29,8 @@ fun PokemonListView(
     hasMorePokemons: Boolean,
     lazyListState: LazyListState,
     onPokemonClick: (PokemonEntity) -> Unit,
-    onLoadMore: () -> Unit
+    onLoadMore: () -> Unit,
+    navController: NavController
 ) {
 
     LazyColumn(
@@ -40,7 +43,8 @@ fun PokemonListView(
             pokemon ->
             PocemonCard(
                 pokemon,
-                onClick = {onPokemonClick(pokemon)}
+                onClick = {onPokemonClick(pokemon)},
+                navController = navController
             )
         }
 

@@ -20,7 +20,6 @@ class MainActivity: ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-
         (application as PokeApp).appComponent.inject(this)
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()

@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pocemons.data.models.entity.PokemonEntity
+import com.example.pocemons.data.models.response.PokemonDetailResponse
 import com.example.pocemons.data.repository.PokeRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -31,6 +32,13 @@ class PokeViewmodel(private val repository: PokeRepository): ViewModel() {
 
     private val _isSearching = MutableStateFlow(false)
     var isSearching: StateFlow<Boolean> = _isSearching
+
+
+    var currentPokemon = MutableStateFlow<PokemonDetailResponse?>(null)
+
+    private var _isLoadingPokemon = MutableStateFlow(false)
+    val isLoadingPokemon: StateFlow<Boolean> = _isLoadingPokemon
+
 
     init {
         Log.d("ViewModel", "PokeViewmodel: init")
@@ -122,5 +130,26 @@ class PokeViewmodel(private val repository: PokeRepository): ViewModel() {
                _isLoading.value = false
            }
        }
+    }
+
+    fun getPokemonDetail(name: String) {
+
+        viewModelScope.launch {
+
+            currentPokemon.value = null
+            _isLoadingPokemon.value = true
+
+            try {
+                currentPokemon.value = repository.getPokemonByName(name)
+                _isLoadingPokemon.value = false
+            }
+            catch (e: Exception) {
+                Log.e("PokeViewmodel", "Error getting pokemon detail: ${e.message}")
+            }
+
+            finally {
+                _isLoadingPokemon.value = false
+            }
+        }
     }
 }

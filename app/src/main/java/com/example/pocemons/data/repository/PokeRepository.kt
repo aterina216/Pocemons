@@ -9,6 +9,7 @@ import com.example.pocemons.data.db.PokeDao
 import com.example.pocemons.data.mapper.Mapper.toEntity
 import com.example.pocemons.data.mapper.Mapper.toPokemonEntity
 import com.example.pocemons.data.models.entity.PokemonEntity
+import com.example.pocemons.data.models.response.PokemonDetailResponse
 import kotlin.collections.forEach
 
 class PokeRepository(val pokeDao: PokeDao, val api: PokeApi) {
@@ -76,6 +77,16 @@ class PokeRepository(val pokeDao: PokeDao, val api: PokeApi) {
         catch (e: Exception) {
             Log.d("TAG", "searchPokemon: $e")
             return emptyList()
+        }
+    }
+
+    suspend fun getPokemonByName(name: String): PokemonDetailResponse? {
+        try {
+            val pokemon = api.getPokemonByName(name)
+            return pokemon
+        }
+        catch (e: java.lang.Exception) {
+            return null
         }
     }
 }

@@ -46,6 +46,7 @@ import com.example.pocemons.ui.theme.PokemonBlack
 import com.example.pocemons.ui.theme.PokemonRed
 import com.example.pocemons.ui.viewmodels.PokeViewmodel
 import androidx.compose.runtime.setValue
+import androidx.navigation.NavController
 import androidx.room.util.query
 import com.example.pocemons.ui.components.EmptySearchView
 import com.example.pocemons.ui.components.EmptyStateView
@@ -58,7 +59,8 @@ import kotlinx.coroutines.flow.compose
 @Composable
 fun HomeScreen(
     viewModel: PokeViewmodel,  // ← исправил именование (viewmodel → viewModel)
-    onPokemonClick: (PokemonEntity?) -> Unit = {}
+    onPokemonClick: (PokemonEntity?) -> Unit = {},
+    navController: NavController
 ) {
     val pokemons: List<PokemonEntity> by viewModel.pokemons.collectAsState()
 
@@ -168,7 +170,7 @@ fun HomeScreen(
                 color = Color.Gray,
                 fontSize = 14.sp,
                 modifier = Modifier
-                    .padding(horizontal = 16.dp, vertical = 8.dp)
+                      .padding(horizontal = 16.dp, vertical = 8.dp)
             )
 
             Box(modifier = Modifier.fillMaxSize()) {
@@ -183,7 +185,8 @@ fun HomeScreen(
                             searchResults,
                             searchText.text,
                             lazyListState,
-                            onPokemonClick
+                            onPokemonClick,
+                            navController
                         )
                             }
 
@@ -216,7 +219,8 @@ fun HomeScreen(
                             isHasMore,
                             lazyListState,
                             onPokemonClick,
-                            viewModel::loadMorePokemons
+                            viewModel::loadMorePokemons,
+                            navController
                         )
                     }
                 }

@@ -24,17 +24,21 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import androidx.room.util.TableInfo
 import coil.compose.AsyncImage
 import com.example.pocemons.data.models.entity.PokemonEntity
 import com.example.pocemons.ui.theme.PokemonRed
 import com.example.pocemons.ui.theme.PokemonWhite
+import com.example.pocemons.ui.viewmodels.PokeViewmodel
 
 @Composable
 fun PocemonCard(
     pokemon: PokemonEntity,
     modifier: Modifier = Modifier,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    navController: NavController
     ) {
 
     Card (
@@ -49,7 +53,7 @@ fun PocemonCard(
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface
         ),
-        onClick = onClick
+        onClick = { navController.navigate("details/${pokemon.name}") }
     )
     {
         Box(modifier = Modifier.fillMaxSize()) {

@@ -13,15 +13,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import androidx.room.Query
 import com.example.pocemons.data.models.entity.PokemonEntity
+import com.example.pocemons.ui.viewmodels.PokeViewmodel
 
 @Composable
 fun SearchResultsView(
     searchResults: List<PokemonEntity>,
     query: String,
     lazyListState: LazyListState,
-    onPokemonClick: (PokemonEntity) -> Unit
+    onPokemonClick: (PokemonEntity) -> Unit,
+    navController: NavController
 ) {
     LazyColumn(
         state = lazyListState,
@@ -41,7 +44,8 @@ fun SearchResultsView(
             pokemon ->
             PocemonCard(
                 pokemon,
-                onClick = { onPokemonClick(pokemon) }
+                onClick = { onPokemonClick(pokemon) },
+                navController = navController
             )
         }
     }
