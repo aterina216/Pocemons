@@ -2,6 +2,7 @@ package com.example.pocemons.ui.screens
 
 import android.R
 import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -29,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
@@ -58,6 +60,8 @@ fun DetailScreen(viewmodel: PokeViewmodel,
             teamPokemons.any {it.id == id}
         } ?: false
     }
+
+    val context = LocalContext.current
 
     LaunchedEffect(name) {
         viewmodel.getPokemonDetail(name)
@@ -124,7 +128,11 @@ fun DetailScreen(viewmodel: PokeViewmodel,
                     onTeamToggle = {
                         pokemon?.id?.let {
                             id ->
-                            viewmodel.togglePokemonInTeam(id)
+                            if (teamPokemons.size < 6) {
+                            viewmodel.togglePokemonInTeam(id)}
+                            else {
+                                Toast.makeText(context, "Нельзя добавить больше 6 покемонов", Toast.LENGTH_SHORT).show()
+                            }
                         }
                     },
                     modifier = Modifier.padding(paddingValues)

@@ -46,6 +46,7 @@ class PokeViewmodel(private val repository: PokeRepository) : ViewModel() {
     init {
         Log.d("ViewModel", "PokeViewmodel: init")
         loadPokemons()
+        getTeamPokemons()
     }
 
     fun loadPokemons() {
@@ -159,6 +160,7 @@ class PokeViewmodel(private val repository: PokeRepository) : ViewModel() {
                     ?: _searchResults.value.find { it.id == id }
 
                 if (pokemonToAdd != null) {
+
                     val updatedPokemon = pokemonToAdd.copy(inTeam = true)
                     currentList.add(updatedPokemon)
 
@@ -179,5 +181,16 @@ class PokeViewmodel(private val repository: PokeRepository) : ViewModel() {
             if(pokemon.id == id) pokemon.copy(inTeam = inTeam) else pokemon
         }
         _searchResults.value = updatedSearchResults
+    }
+
+    fun getTeamPokemons() {
+        viewModelScope.launch {
+            try {
+                _teamPokemons.value = repository.getTeamPokemons()
+            }
+            catch (e: Exception) {
+                Log.e("PokeViewmodel", "Error getting team pokemons: ${e.message}")
+            }
+        }
     }
 }
