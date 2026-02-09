@@ -24,4 +24,10 @@ interface PokeDao {
 
     @Query("SELECT name FROM pokemons")
     suspend fun getPokemonNames(): List<String>
+
+    @Query("UPDATE pokemons SET inTeam = :inTeam WHERE id= :id")
+    suspend fun insertPokemonInTeam(id: Int, inTeam: Boolean)
+
+    @Query("SELECT * FROM pokemons WHERE inTeam = 1")
+    suspend fun getTeamPokemons(): List<PokemonEntity>
 }

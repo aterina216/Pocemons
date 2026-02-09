@@ -10,7 +10,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
@@ -21,18 +26,23 @@ import androidx.compose.ui.Modifier
 import com.example.pocemons.data.models.response.Pokemon
 import com.example.pocemons.data.models.response.PokemonDetailResponse
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.internal.illegalDecoyCallException
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.pocemons.R
 import com.example.pocemons.ui.theme.PokemonRed
 import com.example.pocemons.ui.theme.PokemonWhite
 
 @Composable
 fun PokemonDetailContent(
     pokemon: PokemonDetailResponse,
+    isInTeam: Boolean,
+    onTeamToggle: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     var selectedTabInex by remember { mutableStateOf(0) }
@@ -41,7 +51,11 @@ fun PokemonDetailContent(
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        PokemonHeaderSection(pokemon)
+        PokemonHeaderSection(
+            pokemon = pokemon,
+            onTeamToggle = onTeamToggle,
+            isInTeam = isInTeam
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 

@@ -89,4 +89,17 @@ class PokeRepository(val pokeDao: PokeDao, val api: PokeApi) {
             return null
         }
     }
+
+    suspend fun togglePokemonInTeam(id: Int, inTeam: Boolean){
+        try {
+            pokeDao.insertPokemonInTeam(id, inTeam)
+        }
+        catch (e: Exception) {
+            Log.d("TAG", "togglePokemonInTeam: $e")
+        }
+    }
+
+    suspend fun getTeamPokemons(): List<PokemonEntity>{
+        return pokeDao.getTeamPokemons()
+    }
 }

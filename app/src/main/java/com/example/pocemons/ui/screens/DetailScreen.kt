@@ -13,6 +13,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
@@ -28,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.example.pocemons.data.models.response.PokemonDetailResponse
@@ -48,6 +50,14 @@ fun DetailScreen(viewmodel: PokeViewmodel,
 
     val pokemon by viewmodel.currentPokemon.collectAsState()
     val isLoading by viewmodel.isLoadingPokemon.collectAsState()
+
+    val teamPokemons by viewmodel.teamPokemons.collectAsState()
+    val isInTeam = remember(pokemon, teamPokemons) {
+        pokemon?.id?.let {
+            id ->
+            teamPokemons.any {it.id == id}
+        } ?: false
+    }
 
     LaunchedEffect(name) {
         viewmodel.getPokemonDetail(name)
@@ -110,6 +120,13 @@ fun DetailScreen(viewmodel: PokeViewmodel,
             else if (pokemon != null && pokemon?.name == name) {
                 PokemonDetailContent(
                     pokemon = pokemon!!,
+                    isInTeam = isInTeam,
+                    onTeamToggle = {
+                        pokemon?.id?.let {
+                            id ->
+                            viewmodel.togglePokemonInTeam(id)
+                        }
+                    },
                     modifier = Modifier.padding(paddingValues)
                 )
             } else

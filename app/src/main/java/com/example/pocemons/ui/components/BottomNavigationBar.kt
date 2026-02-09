@@ -45,6 +45,12 @@ fun BottomNavigationBar(navController: NavController) {
             "Настройки",
             R.drawable.baseline_settings_24,
             R.drawable.outline_settings_24
+        ),
+        PokemonNavItem(
+            "pokeball",
+            "Покемоны",
+            R.drawable.pokeball824565,
+            R.drawable.pokeball824565
         )
     )
 

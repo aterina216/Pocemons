@@ -1,6 +1,7 @@
 package com.example.pocemons.ui.viewmodels
 
 import android.util.Log
+import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pocemons.data.models.entity.PokemonEntity
@@ -10,7 +11,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class PokeViewmodel(private val repository: PokeRepository): ViewModel() {
+class PokeViewmodel(private val repository: PokeRepository) : ViewModel() {
 
     private var _pokemons = MutableStateFlow<List<PokemonEntity>>(emptyList())
     val pokemons: StateFlow<List<PokemonEntity>> = _pokemons
@@ -39,6 +40,8 @@ class PokeViewmodel(private val repository: PokeRepository): ViewModel() {
     private var _isLoadingPokemon = MutableStateFlow(false)
     val isLoadingPokemon: StateFlow<Boolean> = _isLoadingPokemon
 
+    private val _teamPokemons = MutableStateFlow<List<PokemonEntity>>(emptyList())
+    var teamPokemons: StateFlow<List<PokemonEntity>> = _teamPokemons
 
     init {
         Log.d("ViewModel", "PokeViewmodel: init")
@@ -48,17 +51,14 @@ class PokeViewmodel(private val repository: PokeRepository): ViewModel() {
     fun loadPokemons() {
         viewModelScope.launch {
             _isLoading.value = true
-            try{
+            try {
                 val result = repository.getPokemons(loadMore = false)
                 _pokemons.value = result
                 Log.d("TAG", "loadPokemons: ${pokemons.value}")
                 _hasMorePokemons.value = true
-            }
-            catch (e: Exception){
+            } catch (e: Exception) {
                 _error.value = e.message
-            }
-
-            finally {
+            } finally {
                 _isLoading.value = false
             }
         }
@@ -66,7 +66,7 @@ class PokeViewmodel(private val repository: PokeRepository): ViewModel() {
 
     fun searchPokemons(query: String) {
         viewModelScope.launch {
-            if(query.length<2) {
+            if (query.length < 2) {
                 _searchResults.value = emptyList()
                 return@launch
             }
@@ -76,17 +76,14 @@ class PokeViewmodel(private val repository: PokeRepository): ViewModel() {
 
             try {
                 val results = repository.searchPokemon(query)
-                if(results != null) {
+                if (results != null) {
                     Log.d("TAG", "searchPokemons: $results")
                     _searchResults.value = results
                 }
-            }
-            catch (e: Exception) {
+            } catch (e: Exception) {
                 Log.d("TAG", "searchPokemons: ${e.message}")
                 _error.value = e.message
-            }
-
-            finally {
+            } finally {
                 _isSearching.value = false
             }
         }
@@ -98,38 +95,37 @@ class PokeViewmodel(private val repository: PokeRepository): ViewModel() {
     }
 
     fun loadMorePokemons() {
-       viewModelScope.launch {
-           if(_isLoading.value || !_hasMorePokemons.value) {
-               return@launch
-           }
+        viewModelScope.launch {
+            if (_isLoading.value || !_hasMorePokemons.value) {
+                return@launch
+            }
 
-           _isLoading.value = true
-           _error.value = null
+            _isLoading.value = true
+            _error.value = null
 
-           try {
-               val result = repository.getPokemons(true)
+            try {
+                val result = repository.getPokemons(true)
 
-               if(result.isNotEmpty()) {
-                   val currentList = _pokemons.value.toMutableList()
-                   currentList.addAll(result)
-                   _pokemons.value = currentList
-                   Log.d("PokeViewmodel", "Loaded more: ${result.size} pokemons, total: ${currentList.size}")
-               }
-               else {
-                   _hasMorePokemons.value = false
-                   Log.d("PokeViewmodel", "No more pokemons to load")
-               }
-           }
-           catch (e: Exception) {
-               _error.value = e.message
-               Log.e("PokeViewmodel", "Error loading more pokemons: ${e.message}")
-           }
-
-           finally {
-               _isLoadingMore.value = false
-               _isLoading.value = false
-           }
-       }
+                if (result.isNotEmpty()) {
+                    val currentList = _pokemons.value.toMutableList()
+                    currentList.addAll(result)
+                    _pokemons.value = currentList
+                    Log.d(
+                        "PokeViewmodel",
+                        "Loaded more: ${result.size} pokemons, total: ${currentList.size}"
+                    )
+                } else {
+                    _hasMorePokemons.value = false
+                    Log.d("PokeViewmodel", "No more pokemons to load")
+                }
+            } catch (e: Exception) {
+                _error.value = e.message
+                Log.e("PokeViewmodel", "Error loading more pokemons: ${e.message}")
+            } finally {
+                _isLoadingMore.value = false
+                _isLoading.value = false
+            }
+        }
     }
 
     fun getPokemonDetail(name: String) {
@@ -142,14 +138,46 @@ class PokeViewmodel(private val repository: PokeRepository): ViewModel() {
             try {
                 currentPokemon.value = repository.getPokemonByName(name)
                 _isLoadingPokemon.value = false
-            }
-            catch (e: Exception) {
+            } catch (e: Exception) {
                 Log.e("PokeViewmodel", "Error getting pokemon detail: ${e.message}")
-            }
-
-            finally {
+            } finally {
                 _isLoadingPokemon.value = false
             }
         }
+    }
+
+    fun togglePokemonInTeam(id: Int) {
+        viewModelScope.launch {
+            val currentList = _teamPokemons.value.toMutableList()
+            val isInTeam = currentList.any { it.id == id }
+
+            if (isInTeam) {
+                currentList.removeAll { it.id == id }
+                repository.togglePokemonInTeam(id, false)
+            } else {
+                val pokemonToAdd = _pokemons.value.find { it.id == id }
+                    ?: _searchResults.value.find { it.id == id }
+
+                if (pokemonToAdd != null) {
+                    val updatedPokemon = pokemonToAdd.copy(inTeam = true)
+                    currentList.add(updatedPokemon)
+
+                    repository.togglePokemonInTeam(id, true)
+                }
+            }
+            _teamPokemons.value = currentList
+        }
+    }
+
+    private fun updateMainListTeamStatus(id: Int, inTeam: Boolean) {
+        val updatedMainList = _pokemons.value.map { pokemon ->
+            if(pokemon.id == id) pokemon.copy(inTeam = inTeam) else pokemon
+        }
+        _pokemons.value = updatedMainList
+
+        val updatedSearchResults = _searchResults.value.map { pokemon ->
+            if(pokemon.id == id) pokemon.copy(inTeam = inTeam) else pokemon
+        }
+        _searchResults.value = updatedSearchResults
     }
 }
