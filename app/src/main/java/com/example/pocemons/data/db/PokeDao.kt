@@ -30,4 +30,26 @@ interface PokeDao {
 
     @Query("SELECT * FROM pokemons WHERE inTeam = 1")
     suspend fun getTeamPokemons(): List<PokemonEntity>
+
+    @Query("UPDATE pokemons SET viewAt = :viewAt WHERE id= :id")
+    suspend fun updateViewAt(id: Int, viewAt: Long)
+
+    @Query("SELECT * FROM pokemons WHERE viewAt IS NOT NULL ORDER BY viewAt DESC")
+    suspend fun getHistoryPokemons(): List<PokemonEntity>
+
+    @Query("""
+        UPDATE pokemons 
+        SET viewAt = NULL 
+        WHERE id IN (
+            SELECT id FROM pokemons 
+            WHERE viewAt IS NOT NULL AND viewAt > 0 
+            ORDER BY viewAt ASC 
+            LIMIT (SELECT MAX(0, COUNT(*) - 100) FROM pokemons WHERE viewAt IS NOT NULL AND viewAt > 0)
+        )
+    """)
+    suspend fun clearOldestFromHistory()
+
+    @Query("UPDATE pokemons SET viewAt = NULL WHERE viewAt IS NOT  NULL AND viewAt > 0")
+    suspend fun clearHistory()
+
 }

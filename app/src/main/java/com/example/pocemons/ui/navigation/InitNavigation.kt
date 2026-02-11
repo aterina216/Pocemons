@@ -14,6 +14,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.pocemons.ui.components.BottomNavigationBar
 import com.example.pocemons.ui.screens.DetailScreen
+import com.example.pocemons.ui.screens.HistoryScreen
 import com.example.pocemons.ui.screens.Pokeball
 import com.example.pocemons.ui.screens.SettingsScreen
 import com.example.pocemons.ui.viewmodels.PokeViewmodel
@@ -56,6 +57,14 @@ fun InitNavigation(viewmodel: PokeViewmodel) {
 
             composable("pokeball") {
                 Pokeball(
+                    viewmodel = viewmodel,
+                    navController = navController,
+                    onBackClick = { navController.popBackStack() }
+                )
+            }
+
+            composable("history") {
+                HistoryScreen(
                     viewmodel = viewmodel,
                     navController = navController,
                     onBackClick = { navController.popBackStack() }

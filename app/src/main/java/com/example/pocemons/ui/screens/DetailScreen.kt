@@ -34,6 +34,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.example.pocemons.data.mapper.Mapper.toEntity
 import com.example.pocemons.data.models.response.PokemonDetailResponse
 import com.example.pocemons.ui.components.PokeballBackground
 import com.example.pocemons.ui.components.PokemonDetailContent
@@ -65,6 +66,13 @@ fun DetailScreen(viewmodel: PokeViewmodel,
 
     LaunchedEffect(name) {
         viewmodel.getPokemonDetail(name)
+    }
+
+    LaunchedEffect(pokemon) {
+       if(pokemon != null) {
+           val entity = pokemon!!.toEntity()
+           viewmodel.updateViewAt(entity!!.id, System.currentTimeMillis())
+       }
     }
 
     val isCorrectPokemonLoading = remember(name, pokemon, isLoading) {

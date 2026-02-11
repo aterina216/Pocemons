@@ -41,6 +41,12 @@ fun BottomNavigationBar(navController: NavController) {
             "Главная",
             R.drawable.baseline_home_24,
             R.drawable.outline_home_24),
+
+        PokemonNavItem("history",
+            "История",
+            R.drawable.baseline_access_time_24,
+            R.drawable.baseline_access_time_24),
+
         PokemonNavItem("settings",
             "Настройки",
             R.drawable.baseline_settings_24,

@@ -2,6 +2,7 @@ package com.example.pocemons.data.repository
 
 import android.util.Log
 import androidx.compose.foundation.interaction.HoverInteraction
+import androidx.compose.material.Surface
 import androidx.compose.material.darkColors
 import androidx.room.util.query
 import com.example.pocemons.data.api.PokeApi
@@ -10,6 +11,7 @@ import com.example.pocemons.data.mapper.Mapper.toEntity
 import com.example.pocemons.data.mapper.Mapper.toPokemonEntity
 import com.example.pocemons.data.models.entity.PokemonEntity
 import com.example.pocemons.data.models.response.PokemonDetailResponse
+import java.sql.Time
 import kotlin.collections.forEach
 
 class PokeRepository(val pokeDao: PokeDao, val api: PokeApi) {
@@ -101,5 +103,42 @@ class PokeRepository(val pokeDao: PokeDao, val api: PokeApi) {
 
     suspend fun getTeamPokemons(): List<PokemonEntity>{
         return pokeDao.getTeamPokemons()
+    }
+
+    suspend fun updateViewAt(id: Int, time: Long) {
+        try {
+            pokeDao.updateViewAt(id, time)
+        }
+        catch (e: Exception) {
+            Log.e("TAG", "updateViewAt: $e")
+        }
+    }
+
+    suspend fun getHistoryPokemons(): List<PokemonEntity> {
+        try {
+            val list = pokeDao.getHistoryPokemons()
+            return list
+        }
+        catch (e: Exception) {
+            return emptyList()
+        }
+    }
+
+    suspend fun clearOldHistory() {
+        try {
+            pokeDao.clearOldestFromHistory()
+        }
+        catch (e: Exception) {
+            Log.e("TAG", "clearOldHistory: $e")
+        }
+    }
+
+    suspend fun clearHistory() {
+        try {
+            pokeDao.clearHistory()
+        }
+        catch (e: Exception) {
+            Log.e("TAG", "clearHistory: $e")
+        }
     }
 }

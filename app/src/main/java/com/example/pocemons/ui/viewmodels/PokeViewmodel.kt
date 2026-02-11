@@ -10,6 +10,7 @@ import com.example.pocemons.data.repository.PokeRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import java.sql.Time
 
 class PokeViewmodel(private val repository: PokeRepository) : ViewModel() {
 
@@ -42,6 +43,9 @@ class PokeViewmodel(private val repository: PokeRepository) : ViewModel() {
 
     private val _teamPokemons = MutableStateFlow<List<PokemonEntity>>(emptyList())
     var teamPokemons: StateFlow<List<PokemonEntity>> = _teamPokemons
+
+    private var _historyPokemons = MutableStateFlow<List<PokemonEntity>>(emptyList())
+    val historyPokemons: StateFlow<List<PokemonEntity>> = _historyPokemons
 
     init {
         Log.d("ViewModel", "PokeViewmodel: init")
@@ -190,6 +194,41 @@ class PokeViewmodel(private val repository: PokeRepository) : ViewModel() {
             }
             catch (e: Exception) {
                 Log.e("PokeViewmodel", "Error getting team pokemons: ${e.message}")
+            }
+        }
+    }
+
+    fun updateViewAt(id: Int, time: Long) {
+        viewModelScope.launch {
+            try {
+                repository.updateViewAt(id, time)
+            }
+            catch (e: Exception) {
+                Log.e("PokeViewmodel", "Error updating view at: ${e.message}")
+            }
+        }
+    }
+
+    fun loadHistory() {
+        viewModelScope.launch {
+            try {
+                repository.clearOldHistory()
+                _historyPokemons.value = repository.getHistoryPokemons()
+            }
+            catch (e: Exception){
+                Log.e("PokeViewmodel", "Error loading history: ${e.message}")
+            }
+        }
+    }
+
+    fun clearHistory() {
+        viewModelScope.launch {
+            try {
+                repository.clearHistory()
+                _historyPokemons.value = emptyList()
+            }
+            catch (e: Exception){
+                Log.e("PokeViewmodel", "Error clearing history: ${e.message}")
             }
         }
     }

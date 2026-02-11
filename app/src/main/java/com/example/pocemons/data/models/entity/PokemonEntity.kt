@@ -10,7 +10,8 @@ data class PokemonEntity (
     val name: String,
     val imageUrl: String,
     val url: String,
-    var inTeam: Boolean = false
+    var inTeam: Boolean = false,
+    var viewAt: Long? = null
 )
 {
     fun capitalizedName(): String {
