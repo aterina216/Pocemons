@@ -20,6 +20,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -34,7 +35,6 @@ import coil.compose.rememberAsyncImagePainter
 import com.example.pocemons.R
 import com.example.pocemons.data.models.response.PokemonDetailResponse
 import com.example.pocemons.ui.theme.PokemonBlack
-import com.example.pocemons.ui.theme.PokemonRed
 import com.example.pocemons.ui.theme.PokemonWhite
 
 @Composable
@@ -64,7 +64,7 @@ fun PokemonHeaderSection(pokemon: PokemonDetailResponse,
             ) {
                 Text(
                     text = "#${pokemon.id.toString().padStart(3, '0')}",
-                    color = PokemonRed,
+                    color = MaterialTheme.colorScheme.primary,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold
                 )

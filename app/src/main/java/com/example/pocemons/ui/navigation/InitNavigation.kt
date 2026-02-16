@@ -5,6 +5,9 @@ import android.R.attr.type
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHost
 import androidx.navigation.NavType
@@ -18,11 +21,13 @@ import com.example.pocemons.ui.screens.HistoryScreen
 import com.example.pocemons.ui.screens.Pokeball
 import com.example.pocemons.ui.screens.SettingsScreen
 import com.example.pocemons.ui.viewmodels.PokeViewmodel
+import kotlinx.coroutines.flow.compose
 
 @Composable
 fun InitNavigation(viewmodel: PokeViewmodel) {
 
     val navController = rememberNavController()
+    val startActivity = remember { viewmodel.startActivity.value }
 
     Scaffold(
         bottomBar = {
@@ -33,7 +38,7 @@ fun InitNavigation(viewmodel: PokeViewmodel) {
 
         NavHost(
             navController = navController,
-            startDestination = "home",
+            startDestination = startActivity,
             modifier = Modifier.padding(innerPadding)
         ) {
             composable("home") {
@@ -41,7 +46,10 @@ fun InitNavigation(viewmodel: PokeViewmodel) {
             }
 
             composable("settings") {
-                SettingsScreen()
+                SettingsScreen(
+                    viewmodel = viewmodel,
+                    onBackClick = {navController.popBackStack()}
+                )
             }
 
             composable("details/{name}",

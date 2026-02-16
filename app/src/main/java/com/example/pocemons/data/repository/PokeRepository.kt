@@ -141,4 +141,13 @@ class PokeRepository(val pokeDao: PokeDao, val api: PokeApi) {
             Log.e("TAG", "clearHistory: $e")
         }
     }
+
+    suspend fun clearAll() {
+        try {
+            pokeDao.clearAll()
+        }
+        catch (e: Exception){
+            Log.e("TAG", "clearAll: $e")
+        }
+    }
 }

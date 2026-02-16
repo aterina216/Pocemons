@@ -52,4 +52,6 @@ interface PokeDao {
     @Query("UPDATE pokemons SET viewAt = NULL WHERE viewAt IS NOT  NULL AND viewAt > 0")
     suspend fun clearHistory()
 
+    @Query("DELETE FROM pokemons")
+    suspend fun clearAll()
 }

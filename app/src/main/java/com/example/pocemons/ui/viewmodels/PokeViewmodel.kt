@@ -4,15 +4,18 @@ import android.util.Log
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.pocemons.PokeApp
 import com.example.pocemons.data.models.entity.PokemonEntity
 import com.example.pocemons.data.models.response.PokemonDetailResponse
 import com.example.pocemons.data.repository.PokeRepository
+import com.example.pocemons.utils.Prefs
+import com.example.pocemons.utils.ThemeMode
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import java.sql.Time
 
-class PokeViewmodel(private val repository: PokeRepository) : ViewModel() {
+class PokeViewmodel(private val repository: PokeRepository, private val prefs: Prefs) : ViewModel() {
 
     private var _pokemons = MutableStateFlow<List<PokemonEntity>>(emptyList())
     val pokemons: StateFlow<List<PokemonEntity>> = _pokemons
@@ -46,6 +49,18 @@ class PokeViewmodel(private val repository: PokeRepository) : ViewModel() {
 
     private var _historyPokemons = MutableStateFlow<List<PokemonEntity>>(emptyList())
     val historyPokemons: StateFlow<List<PokemonEntity>> = _historyPokemons
+
+    private var _themeMode = MutableStateFlow(
+        ThemeMode.fromInt(prefs.themeMode)
+    )
+
+    val themeMode: StateFlow<ThemeMode> = _themeMode
+
+    private var _addInHistory = MutableStateFlow(prefs.addInhistory)
+    val addInHistory: StateFlow<Boolean> = _addInHistory
+
+    private var _startActivity = MutableStateFlow(prefs.startActivity)
+    val startActivity: StateFlow<String> = _startActivity
 
     init {
         Log.d("ViewModel", "PokeViewmodel: init")
@@ -201,7 +216,9 @@ class PokeViewmodel(private val repository: PokeRepository) : ViewModel() {
     fun updateViewAt(id: Int, time: Long) {
         viewModelScope.launch {
             try {
-                repository.updateViewAt(id, time)
+                if(_addInHistory.value) {
+                    repository.updateViewAt(id, time)
+                }
             }
             catch (e: Exception) {
                 Log.e("PokeViewmodel", "Error updating view at: ${e.message}")
@@ -231,5 +248,34 @@ class PokeViewmodel(private val repository: PokeRepository) : ViewModel() {
                 Log.e("PokeViewmodel", "Error clearing history: ${e.message}")
             }
         }
+    }
+
+    fun setThemeMode(mode: ThemeMode) {
+        Log.d("PokeViewmodel", "setThemeMode: $mode, previous: ${_themeMode.value}")
+        prefs.themeMode = mode.value
+        _themeMode.value = mode
+    }
+
+    fun setAddInHistory(addInHistory: Boolean) {
+        prefs.addInhistory = addInHistory
+        _addInHistory.value = addInHistory
+    }
+
+    fun clearAll() {
+        viewModelScope.launch {
+            try {
+                repository.clearAll()
+                loadPokemons()
+                _teamPokemons.value = emptyList()
+            }
+            catch (e: Exception){
+                Log.e("PokeViewmodel", "Error clearing all: ${e.message}")
+            }
+        }
+    }
+
+    fun setStartActivity(startActivity: String) {
+        prefs.startActivity = startActivity
+        _startActivity.value = startActivity
     }
 }

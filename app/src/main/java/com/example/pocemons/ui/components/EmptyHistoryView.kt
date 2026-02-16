@@ -13,6 +13,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,7 +26,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.pocemons.R
-import com.example.pocemons.ui.theme.PokemonRed
 import com.example.pocemons.ui.theme.PokemonWhite
 
 @Composable
@@ -41,8 +41,8 @@ fun EmptyHistoryView(modifier: Modifier = Modifier) {
             .background(
                 brush = Brush.radialGradient(
                     colors = listOf(
-                        PokemonRed.copy(alpha = 0.15f),
-                        PokemonRed.copy(alpha = 0.05f)
+                        MaterialTheme.colorScheme.primary.copy(alpha = 0.15f),
+                        MaterialTheme.colorScheme.primary.copy(alpha = 0.05f)
                     )
                 )
             ),
@@ -53,14 +53,14 @@ fun EmptyHistoryView(modifier: Modifier = Modifier) {
                     .size(100.dp)
                     .clip(CircleShape)
                     .background(
-                        color = PokemonRed.copy(alpha = 0.1f)
+                        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
                     ),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     painter = painterResource(R.drawable.baseline_access_time_24),
                     contentDescription = "Empty history",
-                    tint = PokemonRed.copy(alpha = 0.5f),
+                    tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
                     modifier = Modifier.size(48.dp)
                 )
             }
@@ -92,13 +92,13 @@ fun EmptyHistoryView(modifier: Modifier = Modifier) {
                 .padding(horizontal = 48.dp)
                 .clip(CircleShape)
                 .background(
-                    color = PokemonRed.copy(alpha = 0.2f)
+                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)
                 )
                 .padding(horizontal = 16.dp, vertical = 8.dp)
         ) {
             Text(
                 text = "Максимум 100 покемонов",
-                color = PokemonRed,
+                color = MaterialTheme.colorScheme.primary,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Bold
             )

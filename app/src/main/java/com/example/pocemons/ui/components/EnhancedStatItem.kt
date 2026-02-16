@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -25,7 +26,6 @@ import com.example.pocemons.ui.funs.formatName.formatStatName
 import com.example.pocemons.ui.funs.formatName.getStatAbbreviation
 import com.example.pocemons.ui.funs.getProgress
 import com.example.pocemons.ui.funs.getProgress.getProgressColor
-import com.example.pocemons.ui.theme.PokemonRed
 import com.example.pocemons.ui.theme.PokemonWhite
 
 @Composable
@@ -46,14 +46,14 @@ fun EnhancedStatItem(
         Box(
             modifier = Modifier.size(40.dp)
                 .background(
-                    color = PokemonRed.copy(alpha = 0.1f),
+                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
                     shape = RoundedCornerShape(8.dp)
                 ),
             contentAlignment = Alignment.Center
         ) {
             Text(
                 text = getStatAbbreviation(stat.stat.name),
-                color = PokemonRed,
+                color = MaterialTheme.colorScheme.primary,
                 fontSize = 12.sp,
                 fontWeight = FontWeight.Bold
             )

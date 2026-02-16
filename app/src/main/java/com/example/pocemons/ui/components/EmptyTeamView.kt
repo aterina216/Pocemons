@@ -19,6 +19,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -29,7 +30,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.pocemons.ui.theme.PokemonBlack
-import com.example.pocemons.ui.theme.PokemonRed
 import com.example.pocemons.ui.theme.PokemonWhite
 
 @Composable
@@ -43,7 +43,7 @@ fun EmptyTeamView() {
         Box(modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight(0.5f)
-            .background(PokemonRed))
+            .background(MaterialTheme.colorScheme.primary))
 
         Box(modifier = Modifier
             .size(36.dp)
@@ -104,7 +104,7 @@ fun EmptyTeamView() {
                     .fillMaxWidth()
                     .padding(top = 8.dp)
                     .height(6.dp),
-                color = PokemonRed,
+                color = MaterialTheme.colorScheme.primary,
                 trackColor = PokemonWhite.copy(alpha = 0.2f)
             )
         }

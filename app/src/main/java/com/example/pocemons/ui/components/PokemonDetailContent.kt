@@ -16,6 +16,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
@@ -37,7 +38,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.pocemons.R
 import com.example.pocemons.data.mapper.Mapper.toEntity
-import com.example.pocemons.ui.theme.PokemonRed
 import com.example.pocemons.ui.theme.PokemonWhite
 
 @Composable
@@ -65,7 +65,7 @@ fun PokemonDetailContent(
             selectedTabIndex = selectedTabInex,
             modifier = Modifier.fillMaxWidth(),
             containerColor = Color.Transparent,
-            contentColor = PokemonRed,
+            contentColor = MaterialTheme.colorScheme.primary,
             indicator =  {
                 tabPositions ->
                 Box(
@@ -91,7 +91,7 @@ fun PokemonDetailContent(
                     text = {
                         Text(
                             text = title,
-                            color = if (selectedTabInex == index) PokemonRed else PokemonWhite,
+                            color = if (selectedTabInex == index) MaterialTheme.colorScheme.primary else PokemonWhite,
                             fontWeight = if (selectedTabInex == index) FontWeight.Bold else FontWeight.Normal
                         )
                     }

@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -34,7 +35,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.room.util.TableInfo
 import com.example.pocemons.ui.theme.PokemonGray
-import com.example.pocemons.ui.theme.PokemonRed
 import dagger.Component
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -59,7 +59,7 @@ fun PokemonBottomBarItem(
                     modifier = Modifier
                         .size(40.dp)
                         .background(
-                            color = PokemonRed.copy(alpha = 0.15f),
+                            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.15f),
                             shape = RoundedCornerShape(20.dp)
                         )
                 )
@@ -79,7 +79,7 @@ fun PokemonBottomBarItem(
                         else item.icon
                     ),
                     contentDescription = item.title,
-                    tint = if (selected) PokemonRed else PokemonGray,
+                    tint = if (selected) MaterialTheme.colorScheme.primary else PokemonGray,
                     modifier = Modifier.size(24.dp)
                 )
             }
@@ -89,7 +89,7 @@ fun PokemonBottomBarItem(
                         .align(Alignment.TopEnd)
                         .size(8.dp)
                         .background(
-                            color = PokemonRed,
+                            color = MaterialTheme.colorScheme.primary,
                             shape = RoundedCornerShape(4.dp)
                         )
                 )
@@ -111,7 +111,7 @@ fun PokemonBottomBarItem(
                 text = item.title,
                 fontSize = if (selected) 11.sp else 10.sp,
                 fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal,
-                color = if (selected) PokemonRed else PokemonGray,
+                color = if (selected) MaterialTheme.colorScheme.primary else PokemonGray,
                 maxLines = 1
             )
         }

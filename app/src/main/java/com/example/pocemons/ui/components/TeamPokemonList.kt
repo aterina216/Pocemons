@@ -23,6 +23,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -34,7 +35,6 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.pocemons.data.models.entity.PokemonEntity
 import com.example.pocemons.ui.theme.PokemonBlack
-import com.example.pocemons.ui.theme.PokemonRed
 import com.example.pocemons.ui.theme.PokemonWhite
 
 @Composable
@@ -73,7 +73,7 @@ fun TeamPokemonList(
 
                         Text(
                             text = "${pokemons}/6 покемонов",
-                            color = PokemonRed,
+                            color = MaterialTheme.colorScheme.primary,
                             fontSize = 14.sp
                         )
                     }
@@ -81,7 +81,7 @@ fun TeamPokemonList(
                     Box(
                         modifier = Modifier
                             .size(48.dp)
-                            .background(PokemonRed, CircleShape),
+                            .background(MaterialTheme.colorScheme.primary, CircleShape),
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
@@ -123,7 +123,7 @@ fun TeamPokemonList(
                             .align(Alignment.TopEnd)
                             .offset(x = (-8).dp, y = 8.dp),
                         colors = IconButtonDefaults.iconButtonColors(
-                            containerColor = PokemonRed,
+                            containerColor = MaterialTheme.colorScheme.primary,
                             contentColor = PokemonWhite
                         )
                     ) {
@@ -140,7 +140,7 @@ fun TeamPokemonList(
                             .offset(x = 12.dp, y = (-8).dp)
                             .background(
                                 brush = Brush.horizontalGradient(
-                                    colors = listOf(PokemonRed, PokemonBlack)
+                                    colors = listOf(MaterialTheme.colorScheme.primary, PokemonBlack)
                                 ),
                                 shape = RoundedCornerShape(12.dp)
                             )

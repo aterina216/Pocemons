@@ -1,7 +1,7 @@
 package com.example.pocemons.ui.funs
 
 import androidx.compose.ui.graphics.Color
-import com.example.pocemons.ui.theme.PokemonRed
+import com.example.pocemons.ui.theme.PokemonRedd
 
 object getColor {
 
@@ -25,7 +25,7 @@ object getColor {
             "dark" -> Color(0xFF705746)
             "steel" -> Color(0xFFB7B7CE)
             "fairy" -> Color(0xFFD685AD)
-            else -> PokemonRed
+            else -> PokemonRedd
         }
     }
 }

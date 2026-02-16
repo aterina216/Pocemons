@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -24,7 +25,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.dp
 import com.example.pocemons.R
-import com.example.pocemons.ui.theme.PokemonRed
 import com.example.pocemons.ui.theme.PokemonRedDark
 import com.example.pocemons.ui.theme.PokemonWhite
 import kotlinx.coroutines.delay
@@ -49,7 +49,7 @@ fun AddToTeamButton(
             .clip(CircleShape)
             .background(
                 brush = Brush.radialGradient(
-                    colors = listOf(PokemonRed, PokemonRedDark),
+                    colors = listOf(MaterialTheme.colorScheme.primary, PokemonRedDark),
                     radius = 300f
                 )
             )
@@ -75,7 +75,7 @@ fun AddToTeamButton(
             modifier = Modifier
                 .size(40.dp)
                 .clip(CircleShape)
-                .background(PokemonRed),
+                .background(MaterialTheme.colorScheme.primary),
             contentAlignment = Alignment.Center
         ) {
             Icon(

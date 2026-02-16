@@ -16,6 +16,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
@@ -43,7 +44,6 @@ import com.example.pocemons.ui.components.PokeballBackground
 import com.example.pocemons.ui.components.PokemonErrorScreen
 import com.example.pocemons.ui.components.PokemonLoadingScreen
 import com.example.pocemons.ui.theme.PokemonBlack
-import com.example.pocemons.ui.theme.PokemonRed
 import com.example.pocemons.ui.viewmodels.PokeViewmodel
 import androidx.compose.runtime.setValue
 import androidx.navigation.NavController
@@ -115,7 +115,7 @@ fun HomeScreen(
             .background(
                 brush = Brush.verticalGradient(
                     colors = listOf(
-                        PokemonRed.copy(alpha = 0.2f),
+                        MaterialTheme.colorScheme.primary.copy(alpha = 0.2f),
                         PokemonBlack
                     )
                 )
@@ -128,7 +128,7 @@ fun HomeScreen(
                 title = {
                     Text(
                         text = "Pokedex",
-                        color = PokemonRed,
+                        color = MaterialTheme.colorScheme.primary,
                         fontWeight = FontWeight.Bold,
                         fontSize = 24.sp
                     )
@@ -154,13 +154,13 @@ fun HomeScreen(
                 },
                 shape = RoundedCornerShape(12.dp),
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = PokemonRed,
+                    focusedBorderColor = MaterialTheme.colorScheme.primary,
                     unfocusedBorderColor = Color.Gray.copy(alpha = 0.5f),
                     focusedTextColor = Color.White,
                     unfocusedTextColor = Color.White,
                     focusedContainerColor = PokemonBlack.copy(alpha = 0.5f),
                     unfocusedContainerColor = PokemonBlack.copy(alpha = 0.5f),
-                    cursorColor = PokemonRed
+                    cursorColor = MaterialTheme.colorScheme.primary
                 ),
                 singleLine = true
             )

@@ -17,6 +17,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -39,7 +40,6 @@ import com.example.pocemons.data.models.response.PokemonDetailResponse
 import com.example.pocemons.ui.components.PokeballBackground
 import com.example.pocemons.ui.components.PokemonDetailContent
 import com.example.pocemons.ui.theme.PokemonBlack
-import com.example.pocemons.ui.theme.PokemonRed
 import com.example.pocemons.ui.theme.PokemonWhite
 import com.example.pocemons.ui.viewmodels.PokeViewmodel
 import kotlin.contracts.contract
@@ -83,7 +83,7 @@ fun DetailScreen(viewmodel: PokeViewmodel,
         .background(
             brush = Brush.verticalGradient(
                 colors = listOf(
-                    PokemonRed.copy(alpha = 0.2f),
+                    MaterialTheme.colorScheme.primary.copy(alpha = 0.2f),
                     PokemonBlack
                 )
             )
@@ -126,7 +126,7 @@ fun DetailScreen(viewmodel: PokeViewmodel,
                         .padding(paddingValues),
                      contentAlignment = Alignment.Center
                 ) {
-                    CircularProgressIndicator(color = PokemonRed)
+                    CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
                 }
             }
             else if (pokemon != null && pokemon?.name == name) {

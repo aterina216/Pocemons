@@ -29,7 +29,6 @@ import androidx.navigation.NavController
 import androidx.room.util.TableInfo
 import coil.compose.AsyncImage
 import com.example.pocemons.data.models.entity.PokemonEntity
-import com.example.pocemons.ui.theme.PokemonRed
 import com.example.pocemons.ui.theme.PokemonWhite
 import com.example.pocemons.ui.viewmodels.PokeViewmodel
 
@@ -61,8 +60,8 @@ fun PocemonCard(
                 .background(
                     brush = Brush.verticalGradient(
                         colors = listOf(
-                            PokemonRed.copy(alpha = 0.1f),
-                            PokemonRed.copy(alpha = 0.05f)
+                            MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
+                            MaterialTheme.colorScheme.primary.copy(alpha = 0.05f)
                         )
                     ),
                     shape = RoundedCornerShape(16.dp)
@@ -80,7 +79,7 @@ fun PocemonCard(
                 ) {
                     Text(
                         text = pokemon.getPokemonNumber(),
-                        color = PokemonRed,
+                        color = MaterialTheme.colorScheme.primary,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(bottom = 4.dp)
@@ -128,7 +127,7 @@ fun PocemonCard(
             ) {
                 Box(modifier = Modifier.fillMaxSize()
                     .background(
-                        color = PokemonRed,
+                        color = MaterialTheme.colorScheme.primary,
                         shape = RoundedCornerShape(16.dp)
                     ))
             }

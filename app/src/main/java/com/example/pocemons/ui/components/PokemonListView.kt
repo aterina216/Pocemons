@@ -17,9 +17,9 @@ import androidx.compose.material3.Button
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.Alignment
 import androidx.navigation.NavController
-import com.example.pocemons.ui.theme.PokemonRed
 import com.example.pocemons.ui.viewmodels.PokeViewmodel
 
 @Composable
@@ -53,7 +53,7 @@ fun PokemonListView(
                 Box(modifier = Modifier.fillMaxWidth()
                     .padding(vertical = 16.dp),
                     contentAlignment = Alignment.Center) {
-                    CircularProgressIndicator(color = PokemonRed)
+                    CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
                 }
             }
         }
@@ -66,7 +66,7 @@ fun PokemonListView(
                         .fillMaxWidth()
                         .padding(vertical = 16.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = PokemonRed
+                        containerColor = MaterialTheme.colorScheme.primary
                     )
                 ) {
                     Text("Загрузить еще")

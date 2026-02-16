@@ -34,6 +34,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
@@ -68,7 +69,6 @@ import com.example.pocemons.ui.components.PocemonCard
 import com.example.pocemons.ui.components.PokeballBackground
 import com.example.pocemons.ui.funs.FormatTime.formatTime
 import com.example.pocemons.ui.theme.PokemonBlack
-import com.example.pocemons.ui.theme.PokemonRed
 import com.example.pocemons.ui.theme.PokemonWhite
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -90,7 +90,7 @@ fun HistoryScreen(
             .background(
                 brush = Brush.verticalGradient(
                     colors = listOf(
-                        PokemonRed.copy(alpha = 0.15f),
+                        MaterialTheme.colorScheme.primary.copy(alpha = 0.15f),
                         PokemonBlack
                     )
                 )
@@ -187,8 +187,8 @@ fun HistoryScreen(
                                             .background(
                                                 brush = Brush.radialGradient(
                                                     colors = listOf(
-                                                        PokemonRed.copy(alpha = 0.3f),
-                                                        PokemonRed.copy(alpha = 0.1f)
+                                                        MaterialTheme.colorScheme.primary.copy(alpha = 0.3f),
+                                                        MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
                                                     )
                                                 )
                                             ),
@@ -196,7 +196,7 @@ fun HistoryScreen(
                                     ) {
                                         Text(
                                             text = "100",
-                                            color = PokemonRed,
+                                            color = MaterialTheme.colorScheme.primary,
                                             fontSize = 12.sp,
                                             fontWeight = FontWeight.Bold
                                         )
@@ -234,7 +234,7 @@ fun HistoryScreen(
                                         Icon(
                                             painter = painterResource(R.drawable.baseline_access_time_24),
                                             contentDescription = "Time",
-                                            tint = PokemonRed,
+                                            tint = MaterialTheme.colorScheme.primary,
                                             modifier = Modifier.size(12.dp)
                                         )
                                         Spacer(modifier = Modifier.width(4.dp))
@@ -266,13 +266,13 @@ fun HistoryScreen(
                                         modifier = Modifier
                                             .size(40.dp)
                                             .clip(CircleShape)
-                                            .background(color = PokemonRed.copy(alpha = 0.1f)),
+                                            .background(color = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)),
                                         contentAlignment = Alignment.Center
                                     ) {
                                         Icon(
                                             painter = painterResource(R.drawable.baseline_access_time_24),
                                             contentDescription = "End of history",
-                                            tint = PokemonRed.copy(alpha = 0.3f),
+                                            tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f),
                                             modifier = Modifier.size(20.dp)
                                         )
                                     }
@@ -325,7 +325,7 @@ fun HistoryScreen(
                                 Icon(
                                     imageVector = Icons.Outlined.Delete,
                                     contentDescription = "Clear history",
-                                    tint = PokemonRed,
+                                    tint = MaterialTheme.colorScheme.primary,
                                     modifier = Modifier.size(18.dp)
                                 )
                                 Spacer(modifier = Modifier.width(8.dp))

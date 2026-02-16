@@ -28,7 +28,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.pocemons.R
-import com.example.pocemons.ui.theme.PokemonRed
+
 
 @Composable
 fun BottomNavigationBar(navController: NavController) {
@@ -79,9 +79,9 @@ fun BottomNavigationBar(navController: NavController) {
                 .background(
                     brush = Brush.horizontalGradient(
                         colors = listOf(
-                            PokemonRed.copy(alpha = 0.1f),
+                            MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
                             Color.Transparent,
-                            PokemonRed.copy(alpha = 0.1f)
+                            MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
                         )
                     ),
                     shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)

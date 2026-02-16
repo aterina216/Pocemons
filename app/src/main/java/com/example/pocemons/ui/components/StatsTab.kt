@@ -11,6 +11,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -22,7 +23,6 @@ import androidx.room.util.copy
 import com.example.pocemons.data.models.response.Pokemon
 import com.example.pocemons.data.models.response.PokemonDetailResponse
 import com.example.pocemons.ui.theme.PokemonBlack
-import com.example.pocemons.ui.theme.PokemonRed
 import com.example.pocemons.ui.theme.PokemonWhite
 
 @Composable
@@ -60,7 +60,7 @@ fun StatsTab(pokemon: PokemonDetailResponse) {
                     modifier = Modifier.padding(vertical = 8.dp)
                 )
                 Divider(
-                    color = PokemonRed.copy(alpha = 0.1f),
+                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
                     thickness = 1.dp
                 )
             }
@@ -82,7 +82,7 @@ fun StatsTab(pokemon: PokemonDetailResponse) {
 
                 Text(
                     text = totalBaseStats.toString(),
-                    color = PokemonRed,
+                    color = MaterialTheme.colorScheme.primary,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold
                 )
